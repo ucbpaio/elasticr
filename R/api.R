@@ -88,16 +88,18 @@ elastic <- function(cluster_url, index, doc_type = NULL) {
 #' @param json JSON object describing the query that needs to be executed.
 #' @param size [optional] The number of documents to return. If left unspecified, then the default
 #' if to return all documents.
+#' @param source [optional] The fields to return. If left unspecified, then the default is to return
+#' all fields.
 #' @return An \code{elastic_query} object.
 #'
 #' @seealso \url{https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html}
 #'
 #' @examples
 #' all_docs <- query('{"match_all": {}}')
-query <- function(json, size = 0) {
+query <- function(json, size = 0, source = '') {
   stopifnot(valid_json(json))
   api_call <- paste0('"query":', json)
-  structure(list("api_call" = api_call, "size" = size),
+  structure(list("api_call" = api_call, "size" = size, "source" = source),
             class = c("elastic_query", "elastic_api", "elastic"))
 }
 
@@ -303,13 +305,21 @@ aggs <- function(json) {
 
   if (is_elastic_query(search)) {
     if (search$size != 0) {
-      api_call_payload <- paste0('{"size":', search$size, ', ', search$api_call, '}')
-      return(from_size_search(rescource, api_call_payload))
-
+      if (search$source != '') {
+        api_call_payload <- paste0('{"size":', search$size, ', ', '"_source": ', search$source, ', ', search$api_call, '}')
+        return(from_size_search(rescource, api_call_payload))
+      } else {
+        api_call_payload <- paste0('{"size":', search$size, ', ', search$api_call, '}')
+        return(from_size_search(rescource, api_call_payload))
+      }
     } else {
-      api_call_payload <- paste0('{"size": 10000', ', ', search$api_call, '}')
-      return(scroll_search(rescource, api_call_payload))
-
+      if (search$source != '') {
+        api_call_payload <- paste0('{"size": 10000', ', ', '"_source": ', search$source, ', ', search$api_call, '}')
+        return(from_size_search(rescource, api_call_payload))
+      } else {
+        api_call_payload <- paste0('{"size": 10000', ', ', search$api_call, '}')
+        return(scroll_search(rescource, api_call_payload))
+      }
     }
   } else {
     api_call_payload <- paste0('{', search$api_call, '}')
