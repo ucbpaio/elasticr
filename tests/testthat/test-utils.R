@@ -37,14 +37,6 @@ test_that('valid_url identifies invalid URLs to Elasticsearch rescources - missi
 })
 
 
-test_that('valid_url identifies invalid URLs to Elasticsearch rescources - missing port number', {
-  # arrange
-  url <- "http://localhost"
-
-  # act & assert
-  expect_error(valid_url(url))
-})
-
 test_that('valid_url identifies valid ssl URLs to Elasticsearch resources', {
   #arrange
   url <- "https://localhost:9200"
