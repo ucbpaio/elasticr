@@ -19,4 +19,5 @@
 #'
 #' @docType package
 #' @name elasticsearchr
+#' @importFrom dplyr bind_rows
 NULL
