@@ -186,7 +186,7 @@ list_fields <- function() {
 
   process_response <- function(response) {
     index_mapping <- httr::content(response, as = "parsed")
-    fields <- names(index_mapping[[1]]$mappings$data$properties)
+    fields <- names(index_mapping[[1]]$mappings$properties)
     fields
   }
 
