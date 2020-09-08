@@ -4,8 +4,11 @@
 \alias{scroll_search}
 \title{Execute a query with the scroll-search API.}
 \usage{
-scroll_search(rescource, api_call_payload,
-  extract_function = extract_query_results)
+scroll_search(
+  rescource,
+  api_call_payload,
+  extract_function = extract_query_results
+)
 }
 \arguments{
 \item{rescource}{An \code{elastic} rescource object describing on what documents the query is to

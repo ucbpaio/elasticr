@@ -35,6 +35,22 @@ test_that('elastic objects have the correct classes assigned to them', {
 })
 
 
+test_that('elastic objects have the correct classes whithout healthcheck', {
+  # skip if on CRAN or Travis
+  skip_on_travis()
+  skip_on_cran()
+
+  # arrange
+  es_rescource <- elastic("http://localhost:9200", "iris", "data", cluster_healthcheck = FALSE)
+
+  # act
+  elastic_classes <- class(es_rescource)
+
+  # assert
+  expect_identical(elastic_classes, c("elastic_rescource", "elastic"))
+})
+
+
 test_that('elastic objects correctly assemble search URLs when doc_types are specified', {
   # skip if on CRAN or Travis
   skip_on_travis()
