@@ -3,7 +3,6 @@
 \docType{package}
 \name{elasticsearchr}
 \alias{elasticsearchr}
-\alias{elasticsearchr-package}
 \title{elasticsearchr: a lightweight Elasticsearch client for R.}
 \description{
 Allows you to index, update and delete documents as well as run queries and aggregations.
